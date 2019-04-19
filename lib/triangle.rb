@@ -1,30 +1,35 @@
-require 'pry'
 class Triangle
   attr_reader :s1, :s2, :s3
-
 
   def initialize(s1, s2, s3)
     @sides = []
     @sides += [s1, s2, s3]
-    binding.pry
   end
 
-  def kind(s1, s2, s3)
-    #conditional that determines which triangle the numbers given equates to & returns said triangle
-    #triangle options are :equilateral, :scalene and :isosceles
-    #:equilateral -> each side is equal
-    if s1 == s2 == s3
-    #  return :equilateral
-    #end
-    #:scalene -> each side is different
-    #:isosceles -> has two equal sides
-    #method should raise custom error is triangle is invalid & violates triangle inequality
-    #triangle inequality -> sum of 2 sides doesn't exceed the 3rd
+  def kind
+    a = @sides[0]
+    b = @sides[1]
+    c = @sides[2]
+    if @sides.each.any? {|s| s <= 0}
+      raise TriangleError
+    elsif a + b <= c || a + c <= b || b + c <= a
+      raise TriangleError
+    elsif   @sides.uniq.size == 2
+      return :isosceles
+    elsif   @sides.reverse == @sides
+      return :equilateral
+    elsif  @sides.each do |s|
+      i = 0
+      @sides[i] != s
+      i += 1
+    end
+      return :scalene
+    end
   end
 
-  #class TriangleError < StandardError
-  #  def message
-  #    "This is not a valid Triangle."
-  #  end
-  #end
+  class TriangleError < StandardError
+    def message
+      "This is not a valid Triangle."
+    end
+  end
 end
